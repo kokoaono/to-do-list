@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8,30 +8,61 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-console.log('App.js is running!');
-
 var ToDoListApp = function (_React$Component) {
   _inherits(ToDoListApp, _React$Component);
 
-  function ToDoListApp() {
+  function ToDoListApp(props) {
     _classCallCheck(this, ToDoListApp);
 
-    return _possibleConstructorReturn(this, (ToDoListApp.__proto__ || Object.getPrototypeOf(ToDoListApp)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (ToDoListApp.__proto__ || Object.getPrototypeOf(ToDoListApp)).call(this, props));
+
+    _this.handleAdd = _this.handleAdd.bind(_this);
+    _this.handleDeleteTasks = _this.handleDeleteTasks.bind(_this);
+
+    _this.state = {
+      tasks: []
+    };
+    return _this;
   }
 
   _createClass(ToDoListApp, [{
-    key: "render",
+    key: 'handleDeleteTasks',
+    value: function handleDeleteTasks() {
+      this.setState(function () {
+        return {
+          tasks: []
+        };
+      });
+      alert('Congrats! All tasks Completed!');
+    }
+  }, {
+    key: 'handleAdd',
+    value: function handleAdd(task) {
+      if (!task) {
+        return 'Add new task to the list!!';
+      } else if (this.state.tasks.indexOf(task) > -1) {
+        return 'This task already exists.';
+      }
+
+      this.setState(function (prevState) {
+        return {
+          tasks: prevState.tasks.concat(task)
+        };
+      });
+    }
+  }, {
+    key: 'render',
     value: function render() {
       var title = "To-do List";
       var subTitle = "Lock-down Edition!!";
-      var tasks = ['one', 'two'];
 
       return React.createElement(
-        "div",
+        'div',
         null,
         React.createElement(Header, { title: title, subTitle: subTitle }),
-        React.createElement(Tasks, { tasks: tasks }),
-        React.createElement(AddTask, null)
+        React.createElement(Tasks, { tasks: this.state.tasks }),
+        React.createElement(AddTask, { handleAdd: this.handleAdd }),
+        React.createElement(Action, { handleDeleteTasks: this.handleDeleteTasks })
       );
     }
   }]);
@@ -49,18 +80,18 @@ var Header = function (_React$Component2) {
   }
 
   _createClass(Header, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return React.createElement(
-        "div",
+        'div',
         null,
         React.createElement(
-          "h1",
+          'h1',
           null,
           this.props.title
         ),
         React.createElement(
-          "h2",
+          'h2',
           null,
           this.props.subTitle
         )
@@ -81,13 +112,13 @@ var Tasks = function (_React$Component3) {
   }
 
   _createClass(Tasks, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return React.createElement(
-        "div",
+        'div',
         null,
         React.createElement(
-          "ol",
+          'ol',
           null,
           this.props.tasks.map(function (task) {
             return React.createElement(Task, { key: task, taskText: task });
@@ -110,12 +141,17 @@ var Task = function (_React$Component4) {
   }
 
   _createClass(Task, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return React.createElement(
-        "div",
+        'div',
         null,
-        "task:",
+        React.createElement(
+          'strong',
+          null,
+          'TASK:'
+        ),
+        ' ',
         this.props.taskText
       );
     }
@@ -127,38 +163,49 @@ var Task = function (_React$Component4) {
 var AddTask = function (_React$Component5) {
   _inherits(AddTask, _React$Component5);
 
-  function AddTask() {
+  function AddTask(props) {
     _classCallCheck(this, AddTask);
 
-    return _possibleConstructorReturn(this, (AddTask.__proto__ || Object.getPrototypeOf(AddTask)).apply(this, arguments));
+    var _this5 = _possibleConstructorReturn(this, (AddTask.__proto__ || Object.getPrototypeOf(AddTask)).call(this, props));
+
+    _this5.handleAdd = _this5.handleAdd.bind(_this5);
+    _this5.state = {
+      error: undefined
+    };
+    return _this5;
   }
 
   _createClass(AddTask, [{
-    key: "handleAdd",
+    key: 'handleAdd',
     value: function handleAdd(e) {
       e.preventDefault();
 
       var task = e.target.elements.task.value.trim();
+      var error = this.props.handleAdd(task);
 
-      if (task) {
-        alert(task);
-        e.target.elements.task.value = '';
-      }
+      this.setState(function () {
+        return { error: error };
+      });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return React.createElement(
-        "div",
+        'div',
         null,
+        this.state.error && React.createElement(
+          'p',
+          null,
+          this.state.error
+        ),
         React.createElement(
-          "form",
+          'form',
           { onSubmit: this.handleAdd },
-          React.createElement("input", { type: "text", name: "task" }),
+          React.createElement('input', { type: 'text', name: 'task' }),
           React.createElement(
-            "button",
+            'button',
             null,
-            "Add"
+            'Add Task'
           )
         )
       );
@@ -166,6 +213,38 @@ var AddTask = function (_React$Component5) {
   }]);
 
   return AddTask;
+}(React.Component);
+
+var Action = function (_React$Component6) {
+  _inherits(Action, _React$Component6);
+
+  function Action() {
+    _classCallCheck(this, Action);
+
+    return _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).apply(this, arguments));
+  }
+
+  _createClass(Action, [{
+    key: 'handleDeleteTasks',
+    value: function handleDeleteTasks() {
+      var error = this.props.handleDeleteTasks(task);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        null,
+        React.createElement(
+          'button',
+          { onClick: this.props.handleDeleteTasks },
+          'Clear all Tasks'
+        )
+      );
+    }
+  }]);
+
+  return Action;
 }(React.Component);
 
 ReactDOM.render(React.createElement(ToDoListApp, null), document.getElementById('app'));
