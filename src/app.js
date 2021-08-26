@@ -47,38 +47,34 @@ class ToDoListApp extends React.Component{
     )
   }
 }
-class Header extends React.Component {
-  render (){
+
+const Header = (props) => {
     return (
       <div>
-        <h1>{this.props.title}</h1>
-        <h2>{this.props.subTitle}</h2>
+        <h1>{props.title}</h1>
+        <h2>{props.subTitle}</h2>
       </div>
     )
   }
+
+const Tasks = (props) => {
+  return(
+    <div>
+      <ol>
+        {props.tasks.map((task) => <Task key={task} taskText={task} />)}
+      </ol>
+    </div>
+  )
 }
 
-class Tasks extends React.Component {
-  render (){
-    return(
-      <div>
-        <ol>
-          {this.props.tasks.map((task) => <Task key={task} taskText={task} />)}
-        </ol>
-      </div>
-    )
-  }
+const Task = (props) => {
+  return(
+    <div>
+      <strong>TASK:</strong> {props.taskText}
+    </div>
+  )
 }
 
-class Task extends React.Component {
-  render(){
-    return(
-      <div>
-        <strong>TASK:</strong> {this.props.taskText}
-      </div>
-    )
-  }
-}
 
 class AddTask extends React.Component{
   constructor(props) {
@@ -113,18 +109,12 @@ class AddTask extends React.Component{
   }
 }
 
-class Action extends React.Component {
-  handleDeleteTasks(){
-    const error = this.props.handleDeleteTasks(task)
-  }
-
-  render(){
-    return (
-      <div>
-        <button onClick={this.props.handleDeleteTasks}>Clear all Tasks</button>
-      </div>
-    )
-  }
+const Action = (props) => {
+  return (
+    <div>
+      <button onClick={props.handleDeleteTasks}>Clear all Tasks</button>
+    </div>
+  )  
 }
 
 

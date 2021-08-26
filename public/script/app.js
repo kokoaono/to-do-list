@@ -70,109 +70,64 @@ var ToDoListApp = function (_React$Component) {
   return ToDoListApp;
 }(React.Component);
 
-var Header = function (_React$Component2) {
-  _inherits(Header, _React$Component2);
+var Header = function Header(props) {
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'h1',
+      null,
+      props.title
+    ),
+    React.createElement(
+      'h2',
+      null,
+      props.subTitle
+    )
+  );
+};
 
-  function Header() {
-    _classCallCheck(this, Header);
+var Tasks = function Tasks(props) {
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'ol',
+      null,
+      props.tasks.map(function (task) {
+        return React.createElement(Task, { key: task, taskText: task });
+      })
+    )
+  );
+};
 
-    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-  }
+var Task = function Task(props) {
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'strong',
+      null,
+      'TASK:'
+    ),
+    ' ',
+    props.taskText
+  );
+};
 
-  _createClass(Header, [{
-    key: 'render',
-    value: function render() {
-      return React.createElement(
-        'div',
-        null,
-        React.createElement(
-          'h1',
-          null,
-          this.props.title
-        ),
-        React.createElement(
-          'h2',
-          null,
-          this.props.subTitle
-        )
-      );
-    }
-  }]);
-
-  return Header;
-}(React.Component);
-
-var Tasks = function (_React$Component3) {
-  _inherits(Tasks, _React$Component3);
-
-  function Tasks() {
-    _classCallCheck(this, Tasks);
-
-    return _possibleConstructorReturn(this, (Tasks.__proto__ || Object.getPrototypeOf(Tasks)).apply(this, arguments));
-  }
-
-  _createClass(Tasks, [{
-    key: 'render',
-    value: function render() {
-      return React.createElement(
-        'div',
-        null,
-        React.createElement(
-          'ol',
-          null,
-          this.props.tasks.map(function (task) {
-            return React.createElement(Task, { key: task, taskText: task });
-          })
-        )
-      );
-    }
-  }]);
-
-  return Tasks;
-}(React.Component);
-
-var Task = function (_React$Component4) {
-  _inherits(Task, _React$Component4);
-
-  function Task() {
-    _classCallCheck(this, Task);
-
-    return _possibleConstructorReturn(this, (Task.__proto__ || Object.getPrototypeOf(Task)).apply(this, arguments));
-  }
-
-  _createClass(Task, [{
-    key: 'render',
-    value: function render() {
-      return React.createElement(
-        'div',
-        null,
-        React.createElement(
-          'strong',
-          null,
-          'TASK:'
-        ),
-        ' ',
-        this.props.taskText
-      );
-    }
-  }]);
-
-  return Task;
-}(React.Component);
-
-var AddTask = function (_React$Component5) {
-  _inherits(AddTask, _React$Component5);
+var AddTask = function (_React$Component2) {
+  _inherits(AddTask, _React$Component2);
 
   function AddTask(props) {
     _classCallCheck(this, AddTask);
 
-    var _this5 = _possibleConstructorReturn(this, (AddTask.__proto__ || Object.getPrototypeOf(AddTask)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (AddTask.__proto__ || Object.getPrototypeOf(AddTask)).call(this, props));
 
-    _this5.handleAdd = _this5.handleAdd.bind(_this5);
-    _this5.state = {
+    _this2.handleAdd = _this2.handleAdd.bind(_this2);
+    _this2.state = {
       error: undefined
     };
-    return _this5;
+    return _this2;
   }
 
   _createClass(AddTask, [{
@@ -215,36 +170,16 @@ var AddTask = function (_React$Component5) {
   return AddTask;
 }(React.Component);
 
-var Action = function (_React$Component6) {
-  _inherits(Action, _React$Component6);
-
-  function Action() {
-    _classCallCheck(this, Action);
-
-    return _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).apply(this, arguments));
-  }
-
-  _createClass(Action, [{
-    key: 'handleDeleteTasks',
-    value: function handleDeleteTasks() {
-      var error = this.props.handleDeleteTasks(task);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return React.createElement(
-        'div',
-        null,
-        React.createElement(
-          'button',
-          { onClick: this.props.handleDeleteTasks },
-          'Clear all Tasks'
-        )
-      );
-    }
-  }]);
-
-  return Action;
-}(React.Component);
+var Action = function Action(props) {
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'button',
+      { onClick: props.handleDeleteTasks },
+      'Clear all Tasks'
+    )
+  );
+};
 
 ReactDOM.render(React.createElement(ToDoListApp, null), document.getElementById('app'));
