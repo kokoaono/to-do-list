@@ -3,9 +3,10 @@ class ToDoListApp extends React.Component{
     super(props)
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDeleteTasks = this.handleDeleteTasks.bind(this);
+    this.handleDeleteTask = this.handleDeleteTask.bind(this);
 
     this.state ={
-      tasks: []
+      tasks: props.tasks
     };
   }
 
@@ -17,6 +18,12 @@ class ToDoListApp extends React.Component{
     })
     alert('Congrats! All tasks Completed!')
   }
+
+  handleDeleteTask (taskToRemove) {
+    this.setState((prevState) => ({
+      tasks: prevState.tasks.filter((task) => taskToRemove !== task)
+    }))
+  }
   
 
   handleAdd(task){
@@ -26,26 +33,29 @@ class ToDoListApp extends React.Component{
       return 'This task already exists.'
     }
 
-    this.setState((prevState) => {
-      return {
-        tasks: prevState.tasks.concat(task)
-      }
-    })
+    this.setState((prevState) => ({tasks: prevState.tasks.concat(task)}))
   }
 
   render(){
-    const title = "To-do List" 
     const subTitle = "Lock-down Edition!!"
 
     return (
       <div>
-        <Header title={title} subTitle={subTitle} />
-        <Tasks tasks={this.state.tasks} />
+        <Header subTitle={subTitle} />
+        <Tasks 
+        tasks={this.state.tasks}
+        handleDeleteTasks={this.handleDeleteTasks}
+        handleDeleteTask={this.handleDeleteTask}        
+        />
+
         <AddTask handleAdd={this.handleAdd} />
-        <Action handleDeleteTasks={this.handleDeleteTasks} />
       </div>
     )
   }
+}
+
+ToDoListApp.defaultProps = {
+  tasks: []
 }
 
 const Header = (props) => {
@@ -57,11 +67,23 @@ const Header = (props) => {
     )
   }
 
+  Header.defaultProps = {
+    title: 'To-do List'
+  }
+
 const Tasks = (props) => {
   return(
     <div>
+      <button onClick={props.handleDeleteTasks}>
+        Clear all Tasks
+      </button>
       <ol>
-        {props.tasks.map((task) => <Task key={task} taskText={task} />)}
+        {props.tasks.map((task) =>
+         <Task 
+         key={task} 
+         taskText={task}
+         handleDeleteTask={props.handleDeleteTask}
+         />)}
       </ol>
     </div>
   )
@@ -71,6 +93,11 @@ const Task = (props) => {
   return(
     <div>
       <strong>TASK:</strong> {props.taskText}
+      <button onClick={(e) =>{
+        props.handleDeleteTask(props.taskText)}}
+      >
+      DONE!
+      </button>
     </div>
   )
 }
@@ -91,11 +118,9 @@ class AddTask extends React.Component{
     const task = e.target.elements.task.value.trim();
     const error = this.props.handleAdd(task)
 
-    this.setState(() => {
-      return { error }
-    })
-
+    this.setState(() => ({ error }))
   }
+
   render (){
     return (
       <div>
@@ -107,14 +132,6 @@ class AddTask extends React.Component{
       </div>
     )
   }
-}
-
-const Action = (props) => {
-  return (
-    <div>
-      <button onClick={props.handleDeleteTasks}>Clear all Tasks</button>
-    </div>
-  )  
 }
 
 

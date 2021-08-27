@@ -18,9 +18,10 @@ var ToDoListApp = function (_React$Component) {
 
     _this.handleAdd = _this.handleAdd.bind(_this);
     _this.handleDeleteTasks = _this.handleDeleteTasks.bind(_this);
+    _this.handleDeleteTask = _this.handleDeleteTask.bind(_this);
 
     _this.state = {
-      tasks: []
+      tasks: props.tasks
     };
     return _this;
   }
@@ -36,6 +37,17 @@ var ToDoListApp = function (_React$Component) {
       alert('Congrats! All tasks Completed!');
     }
   }, {
+    key: 'handleDeleteTask',
+    value: function handleDeleteTask(taskToRemove) {
+      this.setState(function (prevState) {
+        return {
+          tasks: prevState.tasks.filter(function (task) {
+            return taskToRemove !== task;
+          })
+        };
+      });
+    }
+  }, {
     key: 'handleAdd',
     value: function handleAdd(task) {
       if (!task) {
@@ -45,30 +57,34 @@ var ToDoListApp = function (_React$Component) {
       }
 
       this.setState(function (prevState) {
-        return {
-          tasks: prevState.tasks.concat(task)
-        };
+        return { tasks: prevState.tasks.concat(task) };
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var title = "To-do List";
       var subTitle = "Lock-down Edition!!";
 
       return React.createElement(
         'div',
         null,
-        React.createElement(Header, { title: title, subTitle: subTitle }),
-        React.createElement(Tasks, { tasks: this.state.tasks }),
-        React.createElement(AddTask, { handleAdd: this.handleAdd }),
-        React.createElement(Action, { handleDeleteTasks: this.handleDeleteTasks })
+        React.createElement(Header, { subTitle: subTitle }),
+        React.createElement(Tasks, {
+          tasks: this.state.tasks,
+          handleDeleteTasks: this.handleDeleteTasks,
+          handleDeleteTask: this.handleDeleteTask
+        }),
+        React.createElement(AddTask, { handleAdd: this.handleAdd })
       );
     }
   }]);
 
   return ToDoListApp;
 }(React.Component);
+
+ToDoListApp.defaultProps = {
+  tasks: []
+};
 
 var Header = function Header(props) {
   return React.createElement(
@@ -87,15 +103,28 @@ var Header = function Header(props) {
   );
 };
 
+Header.defaultProps = {
+  title: 'To-do List'
+};
+
 var Tasks = function Tasks(props) {
   return React.createElement(
     'div',
     null,
     React.createElement(
+      'button',
+      { onClick: props.handleDeleteTasks },
+      'Clear all Tasks'
+    ),
+    React.createElement(
       'ol',
       null,
       props.tasks.map(function (task) {
-        return React.createElement(Task, { key: task, taskText: task });
+        return React.createElement(Task, {
+          key: task,
+          taskText: task,
+          handleDeleteTask: props.handleDeleteTask
+        });
       })
     )
   );
@@ -111,7 +140,15 @@ var Task = function Task(props) {
       'TASK:'
     ),
     ' ',
-    props.taskText
+    props.taskText,
+    React.createElement(
+      'button',
+      { onClick: function onClick(e) {
+          props.handleDeleteTask(props.taskText);
+        }
+      },
+      'DONE!'
+    )
   );
 };
 
@@ -169,17 +206,5 @@ var AddTask = function (_React$Component2) {
 
   return AddTask;
 }(React.Component);
-
-var Action = function Action(props) {
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'button',
-      { onClick: props.handleDeleteTasks },
-      'Clear all Tasks'
-    )
-  );
-};
 
 ReactDOM.render(React.createElement(ToDoListApp, null), document.getElementById('app'));
