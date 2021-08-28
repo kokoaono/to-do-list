@@ -10,6 +10,27 @@ class ToDoListApp extends React.Component{
     };
   }
 
+  componentDidMount(){
+    try {
+      const json = localStorage.getItem('tasks');
+      const tasks = JSON.parse(json);
+
+    if(tasks){
+      this.setState(() => ({ tasks }))
+    }
+  } catch (e) {
+
+  }  
+}
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.tasks.length !== this.state.tasks.length){
+      const json = JSON.stringify(this.state.tasks)
+      localStorage.setItem('tasks', json)
+      console.log('saving data');
+    }
+  }
+
   handleDeleteTasks(){
     this.setState(() => {
       return{
@@ -74,17 +95,17 @@ const Header = (props) => {
 const Tasks = (props) => {
   return(
     <div>
-      <button onClick={props.handleDeleteTasks}>
-        Clear all Tasks
-      </button>
-      <ol>
-        {props.tasks.map((task) =>
+      <button onClick={props.handleDeleteTasks}>Clear all Tasks</button>
+      {props.tasks.length === 0 && <p>Please add a task to start!</p>}
+      {
+        props.tasks.map((task) => (
          <Task 
          key={task} 
          taskText={task}
          handleDeleteTask={props.handleDeleteTask}
-         />)}
-      </ol>
+         />
+         ))
+      }
     </div>
   )
 }
@@ -119,6 +140,10 @@ class AddTask extends React.Component{
     const error = this.props.handleAdd(task)
 
     this.setState(() => ({ error }))
+
+    if(!error){
+      e.target.elements.task.value = '';
+    }
   }
 
   render (){

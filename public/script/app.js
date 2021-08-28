@@ -27,6 +27,29 @@ var ToDoListApp = function (_React$Component) {
   }
 
   _createClass(ToDoListApp, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      try {
+        var json = localStorage.getItem('tasks');
+        var tasks = JSON.parse(json);
+
+        if (tasks) {
+          this.setState(function () {
+            return { tasks: tasks };
+          });
+        }
+      } catch (e) {}
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.tasks.length !== this.state.tasks.length) {
+        var json = JSON.stringify(this.state.tasks);
+        localStorage.setItem('tasks', json);
+        console.log('saving data');
+      }
+    }
+  }, {
     key: 'handleDeleteTasks',
     value: function handleDeleteTasks() {
       this.setState(function () {
@@ -116,17 +139,18 @@ var Tasks = function Tasks(props) {
       { onClick: props.handleDeleteTasks },
       'Clear all Tasks'
     ),
-    React.createElement(
-      'ol',
+    props.tasks.length === 0 && React.createElement(
+      'p',
       null,
-      props.tasks.map(function (task) {
-        return React.createElement(Task, {
-          key: task,
-          taskText: task,
-          handleDeleteTask: props.handleDeleteTask
-        });
-      })
-    )
+      'Please add a task to start!'
+    ),
+    props.tasks.map(function (task) {
+      return React.createElement(Task, {
+        key: task,
+        taskText: task,
+        handleDeleteTask: props.handleDeleteTask
+      });
+    })
   );
 };
 
@@ -178,6 +202,10 @@ var AddTask = function (_React$Component2) {
       this.setState(function () {
         return { error: error };
       });
+
+      if (!error) {
+        e.target.elements.task.value = '';
+      }
     }
   }, {
     key: 'render',
