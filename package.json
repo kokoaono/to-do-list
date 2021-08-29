@@ -5,8 +5,14 @@
   "repository": "https://github.com/kokoaono/to-do-list.git",
   "author": "koko",
   "license": "MIT",
+  "scripts": {
+    "serve": "live-server public/",
+    "build": "webpack --watch",
+    "build-babel": "babel src/app.js --out-file=public/script/app.js --presets=env,react --watch"
+  },
   "dependencies": {
     "babel-preset-env": "1.5.2",
-    "babel-preset-react": "6.24.1"
+    "babel-preset-react": "6.24.1",
+    "webpack": "3.1.0"
   }
 }
