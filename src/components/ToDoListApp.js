@@ -3,10 +3,25 @@ import React from 'react';
 import AddTask from './AddTask';
 import Header from './Header';
 import Tasks from './Tasks';
+import Action from './Action'
+import OptionModal from './OptionModal';
 
 class ToDoListApp extends React.Component{
   state = {
-    tasks: []
+    tasks: [],
+    selectedTask: undefined
+  };
+
+  handleDeleteModal = () => {
+    this.setState(() => ({selectedTask: undefined}))
+  }
+
+  handlePick = () => {
+    const randomNum = Math.floor(Math.random() *this.state.tasks.length);
+    const task = this.state.tasks[randomNum];
+    this.setState(() => ({
+      selectedTask: task
+    }))
   };
 
   handleDeleteTasks = () => {
@@ -15,7 +30,6 @@ class ToDoListApp extends React.Component{
         tasks: []
       }
     })
-    alert('Congrats! All tasks Completed!')
   };
 
   handleDeleteTask = (taskToRemove) => {
@@ -54,7 +68,7 @@ class ToDoListApp extends React.Component{
   }; 
 
   render(){
-    const subTitle = "Lock-down Edition!!"
+    const subTitle = "Lock-down!!"
 
     return (
       <div>
@@ -64,8 +78,15 @@ class ToDoListApp extends React.Component{
         handleDeleteTasks={this.handleDeleteTasks}
         handleDeleteTask={this.handleDeleteTask}        
         />
-
+        <Action
+          hasTasks={this.state.tasks.length > 0}
+          handlePick={this.handlePick}
+        />
         <AddTask handleAdd={this.handleAdd} />
+        <OptionModal
+          selectedTask={this.state.selectedTask}
+          handleDeleteModal={this.handleDeleteModal}        
+        />
       </div>
     )
   }
