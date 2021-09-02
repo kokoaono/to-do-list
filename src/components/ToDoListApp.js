@@ -5,16 +5,33 @@ import Header from './Header';
 import Tasks from './Tasks';
 
 class ToDoListApp extends React.Component{
-  constructor(props) {
-    super(props)
-    this.handleAdd = this.handleAdd.bind(this);
-    this.handleDeleteTasks = this.handleDeleteTasks.bind(this);
-    this.handleDeleteTask = this.handleDeleteTask.bind(this);
+  state = {
+    tasks: []
+  };
 
-    this.state ={
-      tasks: props.tasks
-    };
-  }
+  handleDeleteTasks = () => {
+    this.setState(() => {
+      return{
+        tasks: []
+      }
+    })
+    alert('Congrats! All tasks Completed!')
+  };
+
+  handleDeleteTask = (taskToRemove) => {
+    this.setState((prevState) => ({
+      tasks: prevState.tasks.filter((task) => taskToRemove !== task)
+    }))
+  };  
+
+  handleAdd = (task) => {
+    if(!task){
+      return 'Add new task to the list!!'
+    } else if (this.state.tasks.indexOf(task) > -1) {
+      return 'This task already exists.'
+    }
+    this.setState((prevState) => ({tasks: prevState.tasks.concat(task)}))
+  };
 
   componentDidMount(){
     try {
@@ -25,9 +42,8 @@ class ToDoListApp extends React.Component{
       this.setState(() => ({ tasks }))
     }
   } catch (e) {
-
   }  
-}
+};
 
   componentDidUpdate(prevProps, prevState){
     if(prevState.tasks.length !== this.state.tasks.length){
@@ -35,33 +51,7 @@ class ToDoListApp extends React.Component{
       localStorage.setItem('tasks', json)
       console.log('saving data');
     }
-  }
-
-  handleDeleteTasks(){
-    this.setState(() => {
-      return{
-        tasks: []
-      }
-    })
-    alert('Congrats! All tasks Completed!')
-  }
-
-  handleDeleteTask (taskToRemove) {
-    this.setState((prevState) => ({
-      tasks: prevState.tasks.filter((task) => taskToRemove !== task)
-    }))
-  }
-  
-
-  handleAdd(task){
-    if(!task){
-      return 'Add new task to the list!!'
-    } else if (this.state.tasks.indexOf(task) > -1) {
-      return 'This task already exists.'
-    }
-
-    this.setState((prevState) => ({tasks: prevState.tasks.concat(task)}))
-  }
+  }; 
 
   render(){
     const subTitle = "Lock-down Edition!!"
@@ -79,12 +69,6 @@ class ToDoListApp extends React.Component{
       </div>
     )
   }
-}
-
-ToDoListApp.defaultProps = {
-  tasks: []
-}
-
-
+};
 
 export default ToDoListApp

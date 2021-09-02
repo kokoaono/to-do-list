@@ -2,15 +2,11 @@ import React from 'react';
 
 
 class AddTask extends React.Component{
-  constructor(props) {
-    super(props);
-    this.handleAdd = this.handleAdd.bind(this)
-    this.state = {
-      error: undefined
-    }
-  }
+  state = {
+    error: undefined
+  };
 
-  handleAdd(e){
+  handleAdd = (e) => {
     e.preventDefault();
 
     const task = e.target.elements.task.value.trim();
@@ -20,8 +16,8 @@ class AddTask extends React.Component{
 
     if(!error){
       e.target.elements.task.value = '';
-    }
-  }
+    };
+  };
 
   render (){
     return (
