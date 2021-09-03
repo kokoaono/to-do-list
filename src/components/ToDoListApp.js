@@ -73,20 +73,22 @@ class ToDoListApp extends React.Component{
     return (
       <div>
         <Header subTitle={subTitle} />
-        <Tasks 
-        tasks={this.state.tasks}
-        handleDeleteTasks={this.handleDeleteTasks}
-        handleDeleteTask={this.handleDeleteTask}        
-        />
-        <Action
-          hasTasks={this.state.tasks.length > 0}
-          handlePick={this.handlePick}
-        />
-        <AddTask handleAdd={this.handleAdd} />
-        <OptionModal
-          selectedTask={this.state.selectedTask}
-          handleDeleteModal={this.handleDeleteModal}        
-        />
+        <div className="container">
+          <Tasks 
+          tasks={this.state.tasks}
+          handleDeleteTasks={this.handleDeleteTasks}
+          handleDeleteTask={this.handleDeleteTask}        
+          />
+          <Action
+            hasTasks={this.state.tasks.length > 0}
+            handlePick={this.handlePick}
+            />
+          <AddTask handleAdd={this.handleAdd} />
+          <OptionModal
+            selectedTask={this.state.selectedTask}
+            handleDeleteModal={this.handleDeleteModal}        
+            />
+          </div>
       </div>
     )
   }
