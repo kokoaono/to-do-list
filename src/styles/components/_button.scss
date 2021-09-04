@@ -1,0 +1,29 @@
+.big-button {
+  background-color: $plum;
+  border: none;
+  font-weight: bold;
+  font-size: $l-size;
+  margin-bottom: $xl-size;
+  padding: 2.4rem;
+  width: 100%;
+}
+
+.big-button:disabled {
+ opacity: .5;
+}
+
+.button {
+  background: $plum;
+  border: none;
+  color:white;
+  font-weight: 500;
+  padding:$s-size;
+}
+
+.button--link {
+  background:none;
+  border: none;
+  font-weight: 200;
+  color: $off-white;
+  padding: 0;
+}

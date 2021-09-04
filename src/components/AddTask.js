@@ -25,7 +25,7 @@ class AddTask extends React.Component{
         {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.handleAdd}>
           <input type='text' name='task' />
-          <button>Add Task</button>
+          <button className="button">Add Task</button>
         </form>
       </div>
     )
