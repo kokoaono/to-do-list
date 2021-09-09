@@ -15,6 +15,7 @@
 .button {
   background: $plum;
   border: none;
+  border-bottom: .3rem solid darken($plum, 10%);
   color:white;
   font-weight: 500;
   padding:$s-size;
@@ -23,7 +24,6 @@
 .button--link {
   background:none;
   border: none;
-  font-weight: 200;
   color: $off-white;
   padding: 0;
 }
